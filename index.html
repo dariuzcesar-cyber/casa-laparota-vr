@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa La Parota — Bitácora Digital de Obra 360°</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0a0b0d;
+      --card-bg: rgba(20, 22, 27, 0.9);
+      --accent-gold: #c5a059;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Navegación */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(10, 11, 13, 0.95);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand img {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-info h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .brand-info p {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* Hero Banner con Render de Portada */
+    .hero-banner {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      background-image: linear-gradient(to bottom, rgba(10,11,13,0.3), var(--bg-dark)), url('assets/proyecto_casa_la_parota.jpeg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      padding: 2.5rem 2rem;
+    }
+
+    .hero-content {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Tarjeta Ampliada del Arq. Sergio Díaz */
+    .architect-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 1rem 1.5rem;
+      border-radius: 14px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .architect-card img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent-gold);
+    }
+
+    .architect-info h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .architect-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Timeline Selector por Meses */
+    .timeline-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .timeline-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .month-selector {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+
+    .month-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.55rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .month-btn:hover:not(.disabled) {
+      border-color: var(--accent-gold);
+      color: #fff;
+    }
+
+    .month-btn.active {
+      background: var(--accent-gold);
+      color: #000;
+      border-color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .month-btn.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      border-style: dashed;
+    }
+
+    /* Contenedor del Visor 360 */
+    .viewer-wrapper {
+      position: relative;
+      width: 100%;
+      height: 75vh;
+      min-height: 550px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      background: #000;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    footer {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <img src="assets/SERGIODIAZLOGO2026.png" alt="Arq. Sergio Díaz Logo">
+      <div class="brand-info">
+        <h1>Casa La Parota</h1>
+        <p>Bitácora Digital de Avance de Obra</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner con Textos Actualizados y Tarjeta Ampliada -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <div>
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem;">Casa La Parota, Comala</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; letter-spacing: 0.5px;">Registro Fotométrico 360°</p>
+      </div>
+
+      <div class="architect-card">
+        <img src="assets/sergiobookv1-92.jpg" alt="Arq. Sergio Díaz">
+        <div class="architect-info">
+          <h3>Arq. Sergio Díaz</h3>
+          <p>Dirección & Supervisión de Obra</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="timeline-section">
+      <span class="timeline-title">Seleccionar Fecha de Avance:</span>
+      <div class="month-selector">
+        <button class="month-btn active" onclick="loadTour('agosto-2026', this)">Agosto 2026</button>
+        <button class="month-btn" onclick="loadTour('septiembre-2026', this)">Septiembre 2026</button>
+        <button class="month-btn disabled">Octubre 2026</button>
+        <button class="month-btn disabled">Noviembre 2026</button>
+        <button class="month-btn disabled">Diciembre 2026</button>
+      </div>
+    </section>
+
+    <section class="viewer-wrapper">
+      <iframe id="tourIframe" src="tours/agosto-2026/index.html" allowfullscreen></iframe>
+    </section>
+  </main>
+
+  <footer>
+    <p>Casa La Parota — Todos los derechos reservados &copy; 2026 | Producción Audiovisual 360°</p>
+  </footer>
+
+  <script>
+    function loadTour(folderName, btn) {
+      const iframe = document.getElementById('tourIframe');
+      iframe.src = `tours/${folderName}/index.html`;
+
+      document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>
