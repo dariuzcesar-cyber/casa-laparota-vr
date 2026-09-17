@@ -637,7 +637,7 @@ main{flex:1;width:100%;padding-block:clamp(2rem,5vw,3.4rem) clamp(2.5rem,6vw,4re
               <p id="emptyText">Este avance aún no ha sido capturado. El recorrido se publicará al cierre del mes correspondiente.</p>
             </div>
           </div>
-          <iframe id="tourFrame" src="tours/agosto-2026/index.html" title="Recorrido 360° Casa La Parota" allowfullscreen allow="fullscreen; accelerometer; gyroscope; xr-spatial-tracking" loading="eager"></iframe>
+          <iframe id="tourFrame" src="about:blank" title="Recorrido 360° Casa La Parota" allowfullscreen allow="fullscreen; accelerometer; gyroscope; xr-spatial-tracking" loading="eager"></iframe>
         </div>
       </div>
     </section>
@@ -699,6 +699,11 @@ const SITE_CONFIG = {
   mode: 'obra',                 // 'obra' | 'entregado'
   basePath: 'tours/',
 
+  // Sello de publicación. SUBIR ESTE VALOR en cada despliegue:
+  // se añade como ?v= al recorrido para que ningún navegador
+  // ni Cloudflare sirvan la versión anterior desde caché.
+  version: '2026.09.17.1',
+
   // Recorrido final amueblado (se activa en modo 'entregado')
   finalTour: {
     slug: 'final-amueblado',
@@ -730,6 +735,16 @@ const SITE_CONFIG = {
   const newTab    = $('#btnNewTab');
   const emptyTitle= $('#emptyTitle');
   const emptyText = $('#emptyText');
+
+  /* URL del recorrido con sello de versión (anti-caché) */
+  const tourUrl = (slug) =>
+    SITE_CONFIG.basePath + slug + '/index.html?v=' + SITE_CONFIG.version;
+
+  /* El iframe arranca en about:blank y dispara un 'load' propio.
+     Este testigo evita que ese evento oculte el indicador de carga
+     antes de que el recorrido real haya terminado de cargar. */
+  let urlEsperada = null;
+  let relojCarga = null;
 
   /* --- Header: densifica el fondo al hacer scroll --- */
   const header = $('#siteHeader');
@@ -786,7 +801,10 @@ const SITE_CONFIG = {
     empty.classList.remove('is-shown');
     loader.classList.remove('is-hidden');
     newTab.style.display = '';
-    const url = SITE_CONFIG.basePath + m.slug + '/index.html';
+    const url = tourUrl(m.slug);
+    urlEsperada = url;
+    clearTimeout(relojCarga);
+    relojCarga = setTimeout(() => loader.classList.add('is-hidden'), 12000); // red lenta: no dejar el spinner colgado
     frame.src = url;
     newTab.href = url;
     caption.textContent = 'Recorrido 360° · ' + nice + (m.scenes ? ' · ' + m.scenes + ' puntos' : '');
@@ -798,7 +816,12 @@ const SITE_CONFIG = {
     $('#specScenes').textContent = m.available ? (m.scenes + ' panorámicas esféricas') : 'Siguiente captura: ' + m.label;
   }
 
-  frame.addEventListener('load', () => loader.classList.add('is-hidden'));
+  frame.addEventListener('load', () => {
+    if (!urlEsperada) return;                       // ignora el about:blank inicial
+    if (frame.src.indexOf(urlEsperada) === -1) return;
+    clearTimeout(relojCarga);
+    loader.classList.add('is-hidden');
+  });
 
   /* --- Pantalla completa del visor --- */
   $('#btnFullscreen').addEventListener('click', () => {
@@ -821,7 +844,7 @@ const SITE_CONFIG = {
     SITE_CONFIG.months.filter(m => m.available).forEach(m => {
       const a = document.createElement('a');
       a.className = 'archive__card';
-      a.href = SITE_CONFIG.basePath + m.slug + '/index.html';
+      a.href = tourUrl(m.slug);
       a.target = '_blank'; a.rel = 'noopener';
       a.innerHTML = '<div class="eyebrow">' + m.year + '</div>' +
                     '<h4>' + m.label + '</h4>' +
@@ -830,7 +853,7 @@ const SITE_CONFIG = {
     });
 
     if (SITE_CONFIG.finalTour.available){
-      const url = SITE_CONFIG.basePath + SITE_CONFIG.finalTour.slug + '/index.html';
+      const url = tourUrl(SITE_CONFIG.finalTour.slug);
       frame.src = url; newTab.href = url;
       caption.textContent = SITE_CONFIG.finalTour.caption;
       empty.classList.remove('is-shown');
