@@ -1,0 +1,360 @@
+/* ============================================================
+   CASA LA PAROTA · TEMA OSCURO PARA VISOR MARZIPANO
+   Archivo compartido: cada tour mensual lo enlaza con
+   <link rel="stylesheet" href="../../assets/tour-theme.css">
+   Debe cargarse DESPUÉS de style.css para ganar en cascada.
+   ============================================================ */
+:root{
+  --t-bg:#0a0b0d;
+  --t-glass:rgba(10,11,13,.82);
+  --t-glass-hi:rgba(22,25,30,.92);
+  --t-gold:#c5a059;
+  --t-gold-soft:#d9bd86;
+  --t-gold-dim:rgba(197,160,89,.16);
+  --t-line:rgba(255,255,255,.09);
+  --t-text:#e9eaee;
+  --t-text-2:#9ca3af;
+  --t-ease:cubic-bezier(.22,.61,.36,1);
+}
+
+html,body{background:var(--t-bg)}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--t-text);
+  -webkit-font-smoothing:antialiased;
+}
+#pano{background:#000}
+
+/* Viñeta perimetral: enfoca la mirada al centro del panorama */
+#pano::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse at center, transparent 58%, rgba(0,0,0,.42) 100%);
+}
+
+/* ------------------------------------------------------------
+   BARRA DE TÍTULO
+   ------------------------------------------------------------ */
+#titleBar{
+  height:46px !important;
+  left:0 !important;
+  right:0 !important;
+  top:0 !important;
+  text-align:left !important;
+  pointer-events:none;
+  z-index:30;
+}
+body.multiple-scenes #titleBar{left:52px !important}
+/* Con el panel desplegado, la barra de título se desplaza para no quedar oculta */
+#sceneList.enabled ~ #titleBar{left:282px !important;transition:left .5s ease-in-out}
+#titleBar{transition:left .5s ease-in-out}
+body.multiple-scenes.mobile #titleBar{left:58px !important}
+
+#titleBar .sceneName{
+  display:inline-block;
+  width:auto !important;
+  height:auto !important;
+  line-height:1.2 !important;
+  margin-top:9px;
+  padding:.5rem .95rem !important;
+  background:var(--t-glass) !important;
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  border:1px solid var(--t-line);
+  border-radius:8px;
+  color:var(--t-text) !important;
+  font-size:.74rem;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  max-width:min(60vw,420px);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
+  pointer-events:auto;
+}
+.mobile #titleBar .sceneName{line-height:1.2 !important;font-size:.66rem}
+
+/* Marcador dorado antes del nombre de escena */
+#titleBar .sceneName::before{
+  content:"";display:inline-block;vertical-align:middle;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--t-gold);margin-right:.55rem;
+  box-shadow:0 0 8px rgba(197,160,89,.7);
+}
+
+/* ------------------------------------------------------------
+   PANEL DE ESCENAS
+   ------------------------------------------------------------ */
+#sceneList{
+  width:270px !important;
+  left:-270px !important;
+  padding-top:0 !important;
+  max-height:100% !important;
+  z-index:40;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.14) transparent;
+}
+#sceneList.enabled{margin-left:270px !important}
+#sceneList::-webkit-scrollbar{width:4px}
+#sceneList::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:4px}
+
+.mobile #sceneList{width:100% !important;left:-100% !important;padding-top:0 !important}
+.mobile #sceneList.enabled{margin-left:100% !important}
+
+#sceneList .scenes{
+  background:var(--t-glass) !important;
+  backdrop-filter:blur(22px) saturate(150%);
+  -webkit-backdrop-filter:blur(22px) saturate(150%);
+  border-right:1px solid var(--t-line);
+  padding:56px 0 1.5rem;
+  min-height:100%;
+}
+.mobile #sceneList .scenes{padding-top:66px}
+
+/* Encabezado del panel */
+.scene-panel-head{
+  padding:0 1.15rem 1rem;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  margin-bottom:.5rem;
+}
+.scene-panel-head .kicker{
+  font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--t-gold-soft);font-weight:700;
+}
+.scene-panel-head .ttl{
+  font-family:'Syne',sans-serif;
+  font-size:.95rem;font-weight:700;letter-spacing:.01em;color:#fff;margin-top:.3rem;
+}
+.scene-panel-head .meta{font-size:.66rem;color:var(--t-text-2);margin-top:.2rem}
+
+/* Agrupación por zona */
+.scene-group{
+  display:block;
+  padding:1rem 1.15rem .4rem;
+  font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.34);font-weight:700;
+}
+
+/* Ítems */
+#sceneList .scene{
+  height:auto !important;
+  border:0 !important;
+  position:relative;
+}
+#sceneList .scene .text{
+  height:auto !important;
+  line-height:1.35 !important;
+  padding:.62rem 1.15rem .62rem 1.15rem !important;
+  color:var(--t-text-2);
+  font-size:.81rem;
+  font-weight:500;
+  letter-spacing:.005em;
+  transition:color .25s var(--t-ease),background .25s var(--t-ease),padding-left .25s var(--t-ease);
+  border-left:2px solid transparent;
+}
+.mobile #sceneList .scene .text{line-height:1.35 !important;padding-block:.8rem !important;font-size:.88rem}
+
+.no-touch #sceneList .scene:hover{background:transparent !important}
+.no-touch #sceneList .scene:hover .text{
+  color:#fff;background:rgba(255,255,255,.045);
+  border-left-color:rgba(197,160,89,.45);
+  padding-left:1.3rem !important;
+}
+#sceneList .scene.current{background:transparent !important}
+#sceneList .scene.current .text{
+  color:var(--t-gold-soft) !important;
+  background:var(--t-gold-dim);
+  border-left-color:var(--t-gold);
+  font-weight:600;
+}
+
+/* Numeración discreta de puntos */
+#sceneList .scene .text::after{
+  content:attr(data-idx);
+  float:right;
+  font-size:.6rem;letter-spacing:.06em;
+  color:rgba(255,255,255,.22);
+  font-variant-numeric:tabular-nums;
+}
+#sceneList .scene.current .text::after{color:var(--t-gold)}
+
+/* ------------------------------------------------------------
+   CONTROLES (menú, autorrotación, pantalla completa)
+   ------------------------------------------------------------ */
+#sceneListToggle,
+#autorotateToggle,
+#fullscreenToggle{
+  width:40px !important;height:40px !important;
+  top:9px !important;
+  border-radius:9px !important;
+  background:var(--t-glass) !important;
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  border:1px solid var(--t-line) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.45);
+  transition:border-color .3s var(--t-ease),background .3s var(--t-ease),transform .3s var(--t-ease);
+  z-index:50;
+}
+#sceneListToggle{left:9px !important}
+#autorotateToggle{right:9px !important}
+body.fullscreen-enabled #autorotateToggle{right:57px !important}
+body.fullscreen-enabled #fullscreenToggle{right:9px !important}
+
+.mobile #sceneListToggle,
+.mobile #autorotateToggle,
+.mobile #fullscreenToggle{width:44px !important;height:44px !important}
+.mobile #sceneListToggle{left:7px !important}
+.mobile #autorotateToggle{right:7px !important}
+body.fullscreen-enabled.mobile #autorotateToggle{right:59px !important}
+body.fullscreen-enabled.mobile #fullscreenToggle{right:7px !important}
+
+.no-touch #sceneListToggle:hover,
+.no-touch #autorotateToggle:hover,
+.no-touch #fullscreenToggle:hover{
+  background:var(--t-glass-hi) !important;
+  border-color:rgba(197,160,89,.45) !important;
+  transform:translateY(-1px);
+}
+
+/* Iconos PNG heredados: se fuerzan a blanco y se centran */
+#sceneListToggle .icon,
+#autorotateToggle .icon,
+#fullscreenToggle .icon,
+.viewControlButton .icon{
+  top:50% !important;left:50% !important;right:auto !important;bottom:auto !important;
+  transform:translate(-50%,-50%);
+  width:17px !important;height:17px !important;
+  filter:brightness(0) invert(1);
+  opacity:.82;
+  transition:opacity .25s var(--t-ease),filter .25s var(--t-ease);
+}
+.mobile #sceneListToggle .icon,
+.mobile #autorotateToggle .icon,
+.mobile #fullscreenToggle .icon{width:19px !important;height:19px !important}
+
+.no-touch #sceneListToggle:hover .icon,
+.no-touch #autorotateToggle:hover .icon,
+.no-touch #fullscreenToggle:hover .icon{opacity:1}
+
+/* Estado activo: autorrotación encendida y panel abierto en dorado */
+#autorotateToggle.enabled,
+#sceneListToggle.enabled{
+  border-color:rgba(197,160,89,.5) !important;
+  background:rgba(197,160,89,.14) !important;
+}
+#autorotateToggle.enabled .icon,
+#sceneListToggle.enabled .icon{
+  filter:brightness(0) saturate(100%) invert(72%) sepia(24%) saturate(680%) hue-rotate(2deg) brightness(92%) contrast(88%);
+  opacity:1;
+}
+#sceneListToggle .text{display:none !important}
+
+/* Botones de control de vista */
+.viewControlButton{
+  border-radius:9px !important;
+  background:var(--t-glass) !important;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--t-line) !important;
+  transition:border-color .3s var(--t-ease),background .3s var(--t-ease);
+}
+.no-touch .viewControlButton:hover{
+  background:var(--t-glass-hi) !important;
+  border-color:rgba(197,160,89,.4) !important;
+}
+
+/* ------------------------------------------------------------
+   HOTSPOTS
+   ------------------------------------------------------------ */
+.link-hotspot-icon{
+  filter:brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,.65));
+  opacity:.72;
+  transition:opacity .3s var(--t-ease),transform .3s var(--t-ease);
+}
+.no-touch .link-hotspot:hover .link-hotspot-icon{opacity:1;transform:scale(1.08)}
+
+.hotspot-tooltip{
+  background:var(--t-glass-hi) !important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--t-line) !important;
+  border-radius:8px !important;
+  color:var(--t-text) !important;
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif !important;
+  font-size:.72rem !important;
+  font-weight:600 !important;
+  letter-spacing:.09em !important;
+  text-transform:uppercase;
+  padding:.5rem .8rem !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.6) !important;
+}
+
+.info-hotspot .info-hotspot-header{
+  background:var(--t-glass-hi) !important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(197,160,89,.35) !important;
+  border-radius:100px !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.55) !important;
+}
+.info-hotspot .info-hotspot-icon,
+.info-hotspot .info-hotspot-close-icon{filter:brightness(0) invert(1);opacity:.9}
+.info-hotspot .info-hotspot-title{
+  font-family:'Syne',sans-serif !important;
+  font-size:.78rem !important;font-weight:600 !important;color:#fff !important;
+  letter-spacing:.02em !important;
+}
+.info-hotspot .info-hotspot-title-wrapper:before{display:none !important}
+.info-hotspot .info-hotspot-text{
+  background:var(--t-glass-hi) !important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--t-line) !important;
+  border-radius:10px !important;
+  color:var(--t-text-2) !important;
+  font-size:.78rem !important;line-height:1.6 !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.6) !important;
+}
+.info-hotspot .info-hotspot-header{background-color:transparent !important}
+
+/* ------------------------------------------------------------
+   MARCA DE AGUA FLOTANTE
+   ------------------------------------------------------------ */
+.tour-watermark{
+  position:fixed;
+  top:12px;
+  right:57px;
+  z-index:45;
+  pointer-events:none;
+  display:flex;align-items:center;gap:.6rem;
+  padding:.35rem .7rem;
+  border-radius:8px;
+  background:rgba(10,11,13,.5);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.06);
+  opacity:.9;
+  transition:opacity .4s var(--t-ease);
+}
+.tour-watermark img{
+  height:26px;width:auto;display:block;
+  filter:brightness(0) invert(1);
+  opacity:.92;
+}
+.tour-watermark .wm-label{
+  font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);font-weight:600;line-height:1.3;
+  border-left:1px solid rgba(255,255,255,.14);
+  padding-left:.6rem;
+  white-space:nowrap;
+}
+body.fullscreen-enabled .tour-watermark{right:105px}
+@media (max-width:720px){
+  .tour-watermark{right:59px;top:10px;padding:.28rem .5rem}
+  .tour-watermark img{height:21px}
+  .tour-watermark .wm-label{display:none}
+  body.fullscreen-enabled .tour-watermark{right:111px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important;animation:none !important}
+}

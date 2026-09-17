@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Casa La Parota - Avance Agosto 2026</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
+<style> @-ms-viewport { width: device-width; } </style>
+<link rel="stylesheet" href="vendor/reset.min.css">
+<link rel="stylesheet" href="style.css">
+
+<!-- Estilos Dark para el Menú Lateral de Marzipano -->
+<style>
+  #sceneList {
+    background: rgba(10, 11, 13, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    font-family: system-ui, -apple-system, sans-serif !important;
+  }
+
+  #sceneList .scene {
+    color: #9ca3af !important;
+    font-size: 0.82rem !important;
+    padding: 12px 16px !important;
+    transition: all 0.2s ease !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+
+  #sceneList .scene:hover,
+  #sceneList .scene.current {
+    background: rgba(197, 160, 89, 0.18) !important;
+    color: #c5a059 !important;
+    font-weight: 600 !important;
+  }
+
+  #titleBar {
+    background: rgba(10, 11, 13, 0.85) !important;
+    backdrop-filter: blur(8px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+</style>
+</head>
+<body class="multiple-scenes ">
+
+<div id="pano"></div>
+
+<div id="sceneList">
+  <ul class="scenes">
+      <a href="javascript:void(0)" class="scene" data-id="0-clpagostofachadafrente">
+        <li class="text">CLPAgostoFachadaFrente</li>
+      </a>
+  </ul>
+</div>
+
+<div id="titleBar">
+  <h1 class="sceneName"></h1>
+</div>
+
+<a href="javascript:void(0)" id="autorotateToggle">
+  <img class="icon off" src="img/play.png">
+  <img class="icon on" src="img/pause.png">
+</a>
+
+<a href="javascript:void(0)" id="fullscreenToggle">
+  <img class="icon off" src="img/fullscreen.png">
+  <img class="icon on" src="img/windowed.png">
+</a>
+
+<a href="javascript:void(0)" id="sceneListToggle">
+  <img class="icon open" src="img/menu.png">
+  <img class="icon closed" src="img/close.png">
+</a>
+
+<div id="viewUp" class="viewControlButton viewControlButton-1">
+  <img class="icon" src="img/up.png">
+</div>
+<div id="viewDown" class="viewControlButton viewControlButton-2">
+  <img class="icon" src="img/down.png">
+</div>
+<div id="viewLeft" class="viewControlButton viewControlButton-3">
+  <img class="icon" src="img/left.png">
+</div>
+<div id="viewRight" class="viewControlButton viewControlButton-4">
+  <img class="icon" src="img/right.png">
+</div>
+<div id="viewIn" class="viewControlButton viewControlButton-5">
+  <img class="icon" src="img/plus.png">
+</div>
+<div id="viewOut" class="viewControlButton viewControlButton-6">
+  <img class="icon" src="img/minus.png">
+</div>
+
+<!-- Logo Flotante Persistente sobre el Recorrido -->
+<div style="position: fixed; top: 16px; right: 16px; z-index: 1000; pointer-events: none;">
+  <img src="../../assets/sergiologonegro.png" style="height: 38px; width: auto; filter: brightness(0) invert(1); opacity: 0.85;">
+</div>
+
+<script src="vendor/screenfull.min.js"></script>
+<script src="vendor/bowser.min.js"></script>
+<script src="vendor/marzipano.js"></script>
+
+<script src="data.js"></script>
+<script src="index.js"></script>
+
+</body>
+</html>
