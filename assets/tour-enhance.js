@@ -37,7 +37,11 @@
     'Terraza'  : 'Terrazas',
     'Azotea'   : 'Azotea',
     'Jardin'   : 'Jardín',
-    'Alberca'  : 'Alberca'
+    'Alberca'  : 'Alberca',
+    'Pasillo'  : 'Pasillos',
+    'Lateral'  : 'Laterales',
+    'Estudio'  : 'Estudio',
+    'Cuartito' : 'Cuartito'
   };
 
   var ACENTOS = {

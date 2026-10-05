@@ -64,28 +64,42 @@ curl -s https://<tu-dominio>/ | grep -o "version: '[^']*'"
 # debe coincidir con el SITE_CONFIG local
 ```
 
-## Advertencia de escala
+## Tiles en Cloudflare R2 (desde octubre 2026)
 
-El repositorio pesa **428 MB** y rastrea **10 252 archivos**; los tiles del
-360° son el 99 %. Con un solo mes ya es lento de clonar y de subir.
+Los tiles del 360° ya **no viven en git ni en Cloudflare Pages**. Pasaban de
+22 000 archivos y el tope de Pages es 20 000. Ahora están en R2:
 
-- Cloudflare Pages tiene un tope de **20 000 archivos por despliegue**.
-  Agosto ya usa 10 220. **El segundo mes revienta ese límite.**
-- Un `git push` de este tamaño falla o se cuelga con frecuencia sobre HTTPS.
+- Bucket: `casa-la-parota-tiles`
+- URL pública: `https://tiles.dariuzph.com/<mes>/<escena>/...`
+- `tours/<mes>/index.js` apunta ahí con `var urlPrefix`.
+- `tours/*/tiles/` está en `.gitignore`: la carpeta sigue en tu disco
+  (es el respaldo local) pero no se sube a GitHub. El deploy de Pages
+  queda en unas decenas de archivos.
 
-Antes de publicar septiembre hay que sacar los tiles de git. Dos caminos:
+### Publicar un mes nuevo
 
-**A — Subida directa con Wrangler (recomendada).** Los tiles dejan de vivir
-en el repo; git conserva solo el código.
-```bash
-npm install -g wrangler
-wrangler pages deploy . --project-name=casa-laparota-vr
-```
-Y añadir `tours/*/tiles/` al `.gitignore`.
+1. Exportar con Marzipano a `tours/<mes>-<año>/` y aplicar las 3 líneas de
+   `MANTENIMIENTO.md`.
+2. En `tours/<mes>-<año>/index.js` cambiar:
+   ```js
+   var urlPrefix = "https://tiles.dariuzph.com/<mes>-<año>";
+   ```
+3. Subir los tiles **antes** de hacer push (si no, el sitio queda sin imagen):
+   ```bash
+   export R2_ACCESS_KEY_ID="..."        # token casa-la-parota-subida
+   export R2_SECRET_ACCESS_KEY="..."
+   scripts/subir-tiles.sh <mes>-<año>
+   ```
+   Requiere `brew install rclone`. Las claves se guardan en el gestor de
+   contraseñas, nunca en el repo.
+4. Comprobar `https://tiles.dariuzph.com/<mes>-<año>/0-frente/preview.jpg`
+   (o la primera escena del tour).
+5. Marcar el mes en `SITE_CONFIG`, subir `version` y hacer `git push`.
 
-**B — Tiles en Cloudflare R2** y apuntar Marzipano a esa URL en
-`tours/<mes>/index.js` (`var urlPrefix`). Es el camino limpio a largo plazo:
-el repo se queda en pocos MB y no hay tope de archivos.
-
-El límite de 20 000 archivos no es negociable: conviene resolverlo antes de
-la captura de septiembre, no después.
+### Notas
+- El bucket tiene CORS `*` (GET/HEAD): el visor WebGL lo necesita. Si algún
+  día se restringe, incluir el dominio del sitio y `http://localhost:8000`.
+- Los tiles se suben con `Cache-Control: immutable` de un año; si hay que
+  reemplazar un tile, usa una carpeta/nombre nuevo o purga la caché de
+  `tiles.dariuzph.com` en Cloudflare.
+- Cupo gratis de R2: 10 GB, 1 M escrituras y 10 M lecturas al mes.

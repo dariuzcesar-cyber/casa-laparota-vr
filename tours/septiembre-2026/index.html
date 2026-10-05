@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Casa La Parota — Avance Septiembre 2026 · Recorrido 360°</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0b0d">
+<meta name="robots" content="noindex, nofollow">
+<style> @-ms-viewport { width: device-width; } </style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+
+<!-- Base de Marzipano -->
+<link rel="stylesheet" href="vendor/reset.min.css">
+<link rel="stylesheet" href="style.css">
+<!-- Tema oscuro "Architect-Grade" (compartido por todos los meses) -->
+<link rel="stylesheet" href="../../assets/tour-theme.css?v=2026.09.17.1">
+</head>
+
+<body class="multiple-scenes">
+
+<div id="pano"></div>
+
+<!-- El contenido de esta lista lo genera tour-enhance.js a partir de APP_DATA -->
+<div id="sceneList">
+  <ul class="scenes"></ul>
+</div>
+
+<div id="titleBar">
+  <h1 class="sceneName"></h1>
+</div>
+
+<a href="javascript:void(0)" id="autorotateToggle" title="Autorrotación" aria-label="Activar o detener autorrotación">
+  <img class="icon off" src="img/play.png" alt="">
+  <img class="icon on" src="img/pause.png" alt="">
+</a>
+
+<a href="javascript:void(0)" id="fullscreenToggle" title="Pantalla completa" aria-label="Pantalla completa">
+  <img class="icon off" src="img/fullscreen.png" alt="">
+  <img class="icon on" src="img/windowed.png" alt="">
+</a>
+
+<a href="javascript:void(0)" id="sceneListToggle" title="Puntos de captura" aria-label="Mostrar u ocultar el listado de puntos">
+  <img class="icon off" src="img/expand.png" alt="">
+  <img class="icon on" src="img/collapse.png" alt="">
+</a>
+
+<div id="viewUp" class="viewControlButton viewControlButton-1"><img class="icon" src="img/up.png" alt=""></div>
+<div id="viewDown" class="viewControlButton viewControlButton-2"><img class="icon" src="img/down.png" alt=""></div>
+<div id="viewLeft" class="viewControlButton viewControlButton-3"><img class="icon" src="img/left.png" alt=""></div>
+<div id="viewRight" class="viewControlButton viewControlButton-4"><img class="icon" src="img/right.png" alt=""></div>
+<div id="viewIn" class="viewControlButton viewControlButton-5"><img class="icon" src="img/plus.png" alt=""></div>
+<div id="viewOut" class="viewControlButton viewControlButton-6"><img class="icon" src="img/minus.png" alt=""></div>
+
+<!-- Marca de agua flotante: firma de dirección de obra sobre el recorrido -->
+<div class="tour-watermark" aria-hidden="true">
+  <img src="../../assets/sergiologonegro.png" alt="">
+  <span class="wm-label">Dirección de Obra<br>Arq. Sergio Díaz</span>
+</div>
+
+<script src="vendor/screenfull.min.js"></script>
+<script src="vendor/bowser.min.js"></script>
+<script src="vendor/marzipano.js"></script>
+
+<script src="data.js"></script>
+<script src="../../assets/tour-enhance.js?v=2026.09.17.1"></script>
+<script src="index.js"></script>
+
+</body>
+</html>

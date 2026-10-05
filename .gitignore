@@ -16,3 +16,6 @@ _backup_pre_redesign/
 # Herramientas
 node_modules/
 .wrangler/
+
+# Tiles del 360°: viven en Cloudflare R2 (tiles.dariuzph.com), no en git
+tours/*/tiles/

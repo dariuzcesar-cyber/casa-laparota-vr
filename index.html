@@ -702,7 +702,7 @@ const SITE_CONFIG = {
   // Sello de publicación. SUBIR ESTE VALOR en cada despliegue:
   // se añade como ?v= al recorrido para que ningún navegador
   // ni Cloudflare sirvan la versión anterior desde caché.
-  version: '2026.09.17.1',
+  version: '2026.10.03.1',
 
   // Recorrido final amueblado (se activa en modo 'entregado')
   finalTour: {
@@ -715,7 +715,7 @@ const SITE_CONFIG = {
   // Línea de tiempo. Para publicar un mes: available -> true
   months: [
     { slug:'agosto-2026',     label:'Agosto',     year:'2026', available:true,  scenes:20, date:'31 Ago 2026' },
-    { slug:'septiembre-2026', label:'Septiembre', year:'2026', available:false, scenes:0,  date:'' },
+    { slug:'septiembre-2026', label:'Septiembre', year:'2026', available:true,  scenes:23, date:'30 Sep 2026' },
     { slug:'octubre-2026',    label:'Octubre',    year:'2026', available:false, scenes:0,  date:'' },
     { slug:'noviembre-2026',  label:'Noviembre',  year:'2026', available:false, scenes:0,  date:'' },
     { slug:'diciembre-2026',  label:'Diciembre',  year:'2026', available:false, scenes:0,  date:'' }
@@ -861,7 +861,7 @@ const SITE_CONFIG = {
   }
 
   buildTimeline();
-  const first = SITE_CONFIG.months.find(m => m.available) || SITE_CONFIG.months[0];
+  const first = SITE_CONFIG.months.slice().reverse().find(m => m.available) || SITE_CONFIG.months[0];
   selectMonth(first.slug);
   applyMode();
 })();
